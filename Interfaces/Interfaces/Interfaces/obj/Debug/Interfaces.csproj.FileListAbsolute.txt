@@ -1,0 +1,7 @@
+D:\Учеба\Курс C#\Мои ответы\11\Interfaces\Interfaces\Interfaces\bin\Debug\Interfaces.exe.config
+D:\Учеба\Курс C#\Мои ответы\11\Interfaces\Interfaces\Interfaces\bin\Debug\Interfaces.exe
+D:\Учеба\Курс C#\Мои ответы\11\Interfaces\Interfaces\Interfaces\bin\Debug\Interfaces.pdb
+D:\Учеба\Курс C#\Мои ответы\11\Interfaces\Interfaces\Interfaces\obj\Debug\Interfaces.csproj.AssemblyReference.cache
+D:\Учеба\Курс C#\Мои ответы\11\Interfaces\Interfaces\Interfaces\obj\Debug\Interfaces.csproj.CoreCompileInputs.cache
+D:\Учеба\Курс C#\Мои ответы\11\Interfaces\Interfaces\Interfaces\obj\Debug\Interfaces.exe
+D:\Учеба\Курс C#\Мои ответы\11\Interfaces\Interfaces\Interfaces\obj\Debug\Interfaces.pdb
