@@ -22,7 +22,7 @@ namespace Interfaces
         public void M2() { Console.WriteLine("A.M2()"); }
     }
 
-    internal class B : A
+    internal class B : A, I2
     {
         public new void M1() { Console.WriteLine("B.M1()"); }
         public new void M2() { Console.WriteLine("B.M2()"); }
@@ -32,13 +32,12 @@ namespace Interfaces
     {
         private static void Main(string[] args)
         {
-            A a = new A();
-            B b = new B();
+            I1 i1 = new A();
+            I2 i2 = new B();
 
-            a.M1();
-            a.M2();
-            b.M1();
-            b.M2();
+            i1.M1();
+            i2.M2();
+
             Console.ReadLine();
         }
     }

@@ -6,7 +6,10 @@ using System.Text;
 
 namespace OrganizationStructure
 {
-    public class Department : Hierarchy
+    //public class Department : Hierarchy
+
+
+    public class Department
     {
         // Название департамента
         public string Name { get; set; }
@@ -38,10 +41,12 @@ namespace OrganizationStructure
         /// </summary>
         /// <param name="_d">Название департамента</param>
         /// <param name="current_depth">Текущий уровень вложенности</param>
-        public override object Append(object _d, int current_depth, bool director)
+        //public override object Append(object _d, int current_depth, bool director)
+        public Department Append(string _d, int current_depth, bool director)
         {
             Department d = new Department();
-            d.Name = _d as string;
+            //d.Name = _d as string;
+            d.Name = _d;
 
             if (!director)
             {
@@ -52,7 +57,8 @@ namespace OrganizationStructure
                     d.Departments = new List<Department>();
                     for (int i = 1; i < rand.Next(2, 5); i++)
                     {
-                        Department vd = Append(d.Name + i.ToString(), current_depth, false) as Department;
+                        //Department vd = Append(d.Name + i.ToString(), current_depth, false) as Department;
+                        Department vd = Append(d.Name + i.ToString(), current_depth, false);
                         d.Departments.Add(vd);
                     }
                 }
