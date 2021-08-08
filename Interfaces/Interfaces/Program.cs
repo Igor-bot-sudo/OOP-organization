@@ -18,14 +18,14 @@ namespace Interfaces
 
     internal class A : I1, I2
     {
-        public void M1() { Console.WriteLine("A.M1()"); }
-        public void M2() { Console.WriteLine("A.M2()"); }
+        void I1.M1() { Console.WriteLine("A.M1()"); }
+        void I2.M2() { Console.WriteLine("A.M2()"); }
     }
 
-    internal class B : A, I2
+    internal class B : A, I1, I2
     {
-        public new void M1() { Console.WriteLine("B.M1()"); }
-        public new void M2() { Console.WriteLine("B.M2()"); }
+        void I1.M1() { Console.WriteLine("B.M1()"); }
+        void I2.M2() { Console.WriteLine("B.M2()"); }
     }
 
     internal class Program
@@ -33,7 +33,13 @@ namespace Interfaces
         private static void Main(string[] args)
         {
             I1 i1 = new A();
-            I2 i2 = new B();
+            I2 i2 = new A();
+
+            i1.M1();
+            i2.M2();
+
+            i1 = new B();
+            i2 = new B();
 
             i1.M1();
             i2.M2();

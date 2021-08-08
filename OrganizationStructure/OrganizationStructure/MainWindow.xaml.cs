@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,17 +27,18 @@ namespace OrganizationStructure
             {
                 foreach (var d in dept.Departments)
                 {
-                    TreeViewItem item2 = new TreeViewItem();
-                    item2.Header = d.Name;
-                    GetSubDepartments(d, item2);
-                    item.Items.Add(item2);
+                    TreeViewItem subDeptItem = new TreeViewItem();
+                    subDeptItem.Header = d.Name;
+                    GetSubDepartments(d, subDeptItem);
+                    item.Items.Add(subDeptItem);
                 }
             }
+
             foreach (var w in dept.Workers)
             {
-                TreeViewItem item2 = new TreeViewItem();
-                item2.Header = "Имя: " + w.FirstName + ";  Фамилия: " + w.LastName + ";  Возраст: " + w.Age + ";  Должность: " + w.Category + ";  Зарплата: " + w.Salary;
-                item.Items.Add(item2);
+                TreeViewItem subItem = new TreeViewItem();
+                subItem.Header = "Имя: " + w.FirstName + ";  Фамилия: " + w.LastName + ";  Возраст: " + w.Age + ";  Должность: " + w.Category + ";  Зарплата: " + w.Salary;
+                item.Items.Add(subItem);
             }
         }
 

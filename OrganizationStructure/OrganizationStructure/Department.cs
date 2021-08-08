@@ -1,14 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
 namespace OrganizationStructure
 {
-    //public class Department : Hierarchy
-
-
     public class Department
     {
         // Название департамента
@@ -17,10 +15,11 @@ namespace OrganizationStructure
         // Список вложенных департаментов
         public List<Department> Departments { get; set; }
 
-        // Список сотрудников
+        // Список сотрудников департамента
         public List<Worker> Workers { get; set; }
 
         Random rand = new Random();
+
 
         public static void CreateOrganization()
         {
@@ -41,12 +40,13 @@ namespace OrganizationStructure
         /// </summary>
         /// <param name="_d">Название департамента</param>
         /// <param name="current_depth">Текущий уровень вложенности</param>
-        //public override object Append(object _d, int current_depth, bool director)
-        public Department Append(string _d, int current_depth, bool director)
+        /// <param name="director">Логический параметр, определяющий создается отдельный департамент или вся организация</param>
+        /// <returns>Созданный департамент</returns>
+        public Department Append(string deptName, int current_depth, bool director)
         {
             Department d = new Department();
-            //d.Name = _d as string;
-            d.Name = _d;
+            d.Name = deptName;
+            d.Workers = new List<Worker>();
 
             if (!director)
             {
@@ -57,126 +57,76 @@ namespace OrganizationStructure
                     d.Departments = new List<Department>();
                     for (int i = 1; i < rand.Next(2, 5); i++)
                     {
-                        //Department vd = Append(d.Name + i.ToString(), current_depth, false) as Department;
                         Department vd = Append(d.Name + i.ToString(), current_depth, false);
                         d.Departments.Add(vd);
                     }
                 }
                 // Добавляем сотрудников
                 CreateWorkers(d);
-                // Начисляем зарплату руководителю
-                ManagerSalary(d);
             }
             else
             {
                 d.Departments = new List<Department>();
                 // Создаем подразделения
                 for (int i = 1; i < 21; i++)
-                {                    
-                    Department vd = Append("Отдел_" + i.ToString(), rand.Next(1, 4), false) as Department;
+                {
+                    Department vd = Append("Отдел_" + i.ToString(), rand.Next(1, 4), false);
                     d.Departments.Add(vd);
                 }
 
                 // Добавляем директора
-                Worker w = new Worker();
-                w.FirstName = "Имя_директора";
-                w.LastName = "Фамилия_директора";
-                w.Age = rand.Next(40, 65);
-                w.Category = "Директор организации";
-                w.Salary = 0; // Зарплату расчитаем потом
-                d.Workers = new List<Worker>();
-                d.Workers.Add(w);
-
-                // Начисляем зарплату директору
-                ManagerSalary(d);
+                Worker chief = new Chief();
+                chief.FirstName = "Имя_директора";
+                chief.LastName = "Фамилия_директора";
+                chief.Age = rand.Next(40, 65);
+                chief.Category = "Директор организации";
+                chief.SetSalary(d);
+                d.Workers.Add(chief);
             }
             return d;
         }
 
 
-
         /// <summary>
         /// Метод добавления сотрудников в департамент
         /// </summary>
-        /// <param name="dept"></param>
+        /// <param name="dept">Департамент</param>
         private void CreateWorkers(Department dept)
         {
-            dept.Workers = new List<Worker>();
-            // Добавляем руководителя
-            Worker w = new Worker();
-            w.FirstName = "Имя_руководителя";
-            w.LastName = "Фамилия_руководителя";
-            w.Age = rand.Next(20, 65);
-            w.Category = "Начальник отдела";
-            w.Salary = 0; // Зарплату расчитаем потом
-            dept.Workers.Add(w);
-            // Теперь добавляем сотрудников
+            // Добавляем сотрудников
             for (int i = 1; i < rand.Next(5, 21); i++)
             {
-                Worker vw = new Worker();
-                vw.FirstName = "Имя_" + i.ToString();
-                vw.LastName = "Фамилия_" + i.ToString();
-                vw.Age = rand.Next(20, 65);
-                int category = rand.Next(2);
-                if (category == 0)
+                if (rand.Next(2) == 0)
                 {
-                    vw.Category = "Кодер";
-                    vw.Salary = 12 * 8 * 22;
+                    Worker coder = new Coder();
+                    coder.FirstName = "Имя_" + i.ToString();
+                    coder.LastName = "Фамилия_" + i.ToString();
+                    coder.Age = rand.Next(23, 45);
+                    coder.Category = "Кодер";
+                    coder.SetSalary(dept);
+                    dept.Workers.Add(coder);
                 }
                 else
                 {
-                    vw.Category = "Интерн";
-                    vw.Salary = 500;
+                    Worker intern = new Intern();
+                    intern.FirstName = "Имя_" + i.ToString();
+                    intern.LastName = "Фамилия_" + i.ToString();
+                    intern.Age = rand.Next(20, 35);
+                    intern.Category = "Интерн";
+                    intern.SetSalary(dept);
+                    dept.Workers.Add(intern);
                 }
-                dept.Workers.Add(vw);
             }
-        }
 
-
-        /// <summary>
-        /// Метод вычисления зарплаты руководителя
-        /// </summary>
-        /// <param name="dept">Департамент</param>
-        /// <returns>Сумма зарплат всех сотрудников департамента</returns>
-        int ManagerSalary(Department dept)
-        {
-            int result = 0;
-            int sum = 0;
-            foreach (var w in dept.Workers)
-            {
-                if (w.Category == "Начальник отдела") continue;
-                sum += w.Salary;
-            }
-            if (dept.Departments == null)
-            {
-                sum = (int)(sum * 0.15f);
-                if (sum < 1300) sum = 1300;
-                foreach (var w in dept.Workers)
-                {
-                    if (w.Category == "Начальник отдела") w.Salary = sum;
-                    result += w.Salary;
-                }
-            }
-            else
-            {
-                foreach (var d in dept.Departments)
-                {
-                    sum += ManagerSalary(d);
-                }
-                result = sum;
-                sum = (int)(sum * 0.15f);
-                if (sum < 1300) sum = 1300;
-                foreach (var w in dept.Workers)
-                {
-                    if (w.Category == "Начальник отдела" || w.Category == "Директор организации")
-                    {
-                        w.Salary = sum;
-                        result += w.Salary;
-                        break;
-                    }
-                }
-            }
-            return result;
+            Worker manager = new Manager();
+            manager.FirstName = "Имя_руководителя";
+            manager.LastName = "Фамилия_руководителя";
+            manager.Age = rand.Next(30, 45);
+            manager.Category = "Начальник отдела";
+            // Для исключения повторных действий зарплата руководителей департаментов
+            // начисляется при рекурсивном вычислении зарплаты директора организации
+            manager.Salary = 0;
+            dept.Workers.Add(manager);
         }
     }
 }

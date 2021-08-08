@@ -59,8 +59,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AbstractWorker.cs" />
+    <Compile Include="Chief.cs" />
+    <Compile Include="Coder.cs" />
     <Compile Include="Department.cs" />
-    <Compile Include="Hierarchy.cs" />
+    <Compile Include="Intern.cs" />
+    <Compile Include="Manager.cs" />
     <Compile Include="Worker.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
